@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./pro.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="msg"></div>
+    <form  id="forms">
+        <label for="descrip"> Enter Product Name :</label>
+        <input type="text" name="descrip" id="desc" >
+        <select id = "select">
+        </select>
+        <button id="submitbtn">Add Product</button>
+        <h3>Choose Category</h3>
+    </form>
+    <section id="products" class="container">
+        <h2>Products</h2>
+        <div id ="products-content">
+           
+        </div>
+        <section id="productPagination" class="pagination">
+
+        </section>
+    
+    <ul id="detailAdded"></ul>
+    <script src="product.js"></script>
+</body>
+</html>

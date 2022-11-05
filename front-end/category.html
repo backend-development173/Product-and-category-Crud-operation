@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Slide Navbar</title>
+    <link rel="stylesheet" href="./cate.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+</head>
+<body>
+   
+	<div class="main">  	
+			<div class="signup">
+				<form >
+					<h1>Add Category</h1>
+                    <p>
+                        <h4>Category Name</h4>
+                        <input type="text" id="name" class="form-control">
+                    </p>
+					<button  id  = 'category'>Add</button>
+				</form>
+        <div >
+             <h1>Category List From DataBase</h1>
+            <ul id="detailAdded"></ul>
+         
+        </div>
+			</div>
+
+		   
+	</div>
+    <script >
+
+
+const submit=document.getElementById('category')
+    submit.addEventListener('click',(e)=>{
+     
+      e.preventDefault();
+    let valuecate  = document.getElementById('name').value;
+     console.log(valuecate)
+     const obj = {
+        valuecate
+     }
+    
+     console.log(obj);
+     axios.post(`http://localhost:3000/category`,obj).then((res)=>{
+
+   console.log(res.data.message)
+        alert(`${res.data.message}`);
+        location.reload();
+        // window.location.href='./nav.html'
+     }).catch((err)=>{
+        console.log(err);
+     })
+   var  ul=document.getElementById('detailAdded')
+     const li=document.createElement('li')
+        li.innerText=(`${obj.valuecate}`);
+        const dltbtn=document.createElement('button');
+        dltbtn.class='dlt';
+        dltbtn.id=`${obj.id}`
+        dltbtn.textContent='Delete';
+        dltbtn.style.background='#ff4444'
+        const editbtn=document.createElement('button');
+        editbtn.class='edit';
+        editbtn.id=`${obj.id}`
+        editbtn.textContent='Edit';
+        li.appendChild(editbtn);
+        li.appendChild(dltbtn);
+        ul.appendChild(li);
+    
+
+    })
+// get allcategory
+
+window.addEventListener('DOMContentLoaded',()=>{
+   
+    axios.get('http://localhost:3000/getAllcategory').then(data=>{
+        var  ul=document.getElementById('detailAdded')
+        console.log(data)
+        let userList=data.data;
+        userList.forEach(ele=>{
+          
+            const li=document.createElement('li')
+            const li1=document.createElement('li')
+        li.innerText=(`${ele.category}`);
+        li1.innerText=(`${ele.id}`);
+        const dltbtn=document.createElement('button');
+        dltbtn.class='dlt';
+        dltbtn.id=`${ele.id}`
+       dltbtn.addEventListener('click',(e)=>{
+        deletecategory(ele.id);
+       })
+        dltbtn.textContent='Delete';
+        dltbtn.style.background='#ff4444'
+        const editbtn=document.createElement('button');
+        editbtn.addEventListener('click',(e)=>{
+            console.log("line94")
+            update(ele.id);
+        })
+        editbtn.class='edit';
+        editbtn.id=`${ele.id}`
+        editbtn.textContent='Edit';
+        li.appendChild(editbtn);
+        li.appendChild(dltbtn);
+        ul.appendChild(li);
+          
+        })
+    }).catch(err=>console.log(err))
+
+    })
+
+    function deletecategory(id){
+    console.log(id +"line106")
+    axios.delete(`http://localhost:3000/deletecategory/${id}`).then(result=>{
+        removeExpenseinUI(id)
+    }).catch(err=>console.log(err))
+}
+function removeExpenseinUI(id){
+    const expenseId=id;
+    document.getElementById(expenseId).remove();
+    location.reload();
+     
+}
+// edit 
+
+function update(id){
+    axios.post(`http://localhost:3000/editcategory/${id}`).then(res=>{
+        var  ul=document.getElementById('detailAdded');
+        console.log(res.data.obj.category);
+        document.getElementById('name').value =  res.data.obj.category;
+       document.getElementById(`${id}`).remove();
+    }).catch(err=>{
+console.log(err);
+    })
+}
+
+
+    </script>
+</body>
+</html>
